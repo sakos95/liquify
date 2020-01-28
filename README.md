@@ -43,6 +43,10 @@ Add lib-liquify to your html code:
 
 
 # Development
+  
+## Requirements
+
+The automated tests run in Google Chrome, so it should be installed on your computer.
 
 ## Installing dependencies
     npm install
