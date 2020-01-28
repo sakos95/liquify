@@ -1,0 +1,19 @@
+{
+  "name": "liquify",
+  "version": "0.0.1",
+  "dependencies": {
+
+  },
+  "peerDependencies": {
+    "@angular/common": "^9.0.0-rc.9",
+    "@angular/core": "^9.0.0-rc.9",
+    "@angular/flex-layout": "8.0.0-beta.27",
+    "chart.js": "^2.8.0",
+    "offscreen-canvas": "^0.1.1"
+  },
+  "devDependencies": {
+    "codelyzer": "~4.5.0",
+    "tslib": "^1.10.0",
+    "typescript": "~3.6.4"
+  }
+}

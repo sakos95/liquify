@@ -1,0 +1,185 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "liquify": {
+      "root": "projects/liquify",
+      "sourceRoot": "projects/liquify/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/liquify/tsconfig.json",
+            "project": "projects/liquify/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/liquify/tsconfig.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/liquify/src/test.ts",
+            "tsConfig": "projects/liquify/tsconfig.spec.json",
+            "karmaConfig": "projects/liquify/karma.conf.js",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/liquify/src/lib/",
+                "output": "./"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/liquify/tsconfig.json",
+              "projects/liquify/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "test-liquify": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/test-liquify",
+      "sourceRoot": "projects/test-liquify/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/test-liquify",
+            "index": "projects/test-liquify/src/index.html",
+            "main": "projects/test-liquify/src/main.ts",
+            "polyfills": "projects/test-liquify/src/polyfills.ts",
+            "tsConfig": "projects/test-liquify/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/test-liquify/src/favicon.ico",
+              "projects/test-liquify/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/liquify/src/lib/",
+                "output": "./"
+              }
+            ],
+            "styles": [
+              "projects/test-liquify/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/test-liquify/src/environments/environment.ts",
+                  "with": "projects/test-liquify/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "test-liquify:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "test-liquify:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "test-liquify:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/test-liquify/src/test.ts",
+            "polyfills": "projects/test-liquify/src/polyfills.ts",
+            "tsConfig": "projects/test-liquify/tsconfig.spec.json",
+            "karmaConfig": "projects/test-liquify/karma.conf.js",
+            "assets": [
+              "projects/test-liquify/src/favicon.ico",
+              "projects/test-liquify/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/liquify/src/lib/",
+                "output": "./"
+              }
+            ],
+            "styles": [
+              "projects/test-liquify/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/test-liquify/tsconfig.app.json",
+              "projects/test-liquify/tsconfig.spec.json",
+              "projects/test-liquify/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/test-liquify/e2e/protractor.conf.js",
+            "devServerTarget": "test-liquify:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "test-liquify:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "liquify",
+  "cli": {
+    "analytics": false
+  }
+}

@@ -1,0 +1,37 @@
+<div #containerDiv>
+  <div *ngFor="let dummy of ' '.repeat(n).split(''), let x = index">
+    
+    <lib-liquify
+    [addresses]="fakeURL"
+    [xAxisType]="'time'"
+    [yAxisType]="'linear'"
+    [chartType]="'line'"
+    [width]="width"
+    [height]="height"
+    [duration]=10000
+    ></lib-liquify>
+    <!--
+    <app-chart
+    [x] = x
+    [addresses]="fakeURL"
+    [xAxisType]="'time'"
+    [yAxisType]="'linear'"
+    [chartType]="'line'"
+    [width]="width"
+    [height]="height"
+    [duration]=10000
+    ></app-chart>
+    -->
+  </div>
+</div>
+
+<div class="buttonDiv">
+  <p>{{avgFps[0]}}</p>
+  <p><button (click)="measureTenSec()">Measure next 10 seconds</button></p>
+  <p>{{avgTenSec}}</p>
+
+</div>
+<div class="buttonDiv">
+  <p><button (click)="addChart()">Add Chart</button></p>
+
+</div>
