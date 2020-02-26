@@ -9,6 +9,7 @@
     [width]="width"
     [height]="height"
     [duration]=10000
+    (latency)="latencyHandler($event,x)"
     ></lib-liquify>
     <!--
     <app-chart
@@ -20,8 +21,10 @@
     [width]="width"
     [height]="height"
     [duration]=10000
+    (latencyEmitter)="latencyHandler($event,x)"
     ></app-chart>
     -->
+    Latency: {{latency[x]}}
   </div>
 </div>
 

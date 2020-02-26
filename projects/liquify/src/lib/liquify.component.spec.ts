@@ -36,7 +36,9 @@ describe('LiquifyComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('latency should\'t be 60', ((done) => {
+  it('latency should be emitted', ((done) => {
+    let lastLatency;
+    component.latency.subscribe((latency) => lastLatency = latency);
     setTimeout(() => {
       component.colors.set(component.dataSetIDs[0], [0, 128, 0]);
       component.ngOnChanges({
@@ -46,7 +48,7 @@ describe('LiquifyComponent', () => {
     }, 2000);
     setTimeout(() => {
       fixture.detectChanges();
-      expect(component.latency !== 60).toBeTruthy();
+      expect(lastLatency !== undefined).toBeTruthy();
       done();
     }, 2000);
   }));

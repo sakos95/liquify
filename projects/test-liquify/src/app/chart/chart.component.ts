@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, ChangeDetectorRef,
-  SimpleChanges, OnChanges, OnDestroy, AfterViewInit } from '@angular/core';
+  SimpleChanges, OnChanges, OnDestroy, AfterViewInit, EventEmitter } from '@angular/core';
 import { FunctionOverrideInterface } from 'projects/liquify/src/lib/interfaces/function.override.interface';
 import { DefaultFunctionSources } from 'projects/liquify/src/lib/defaults/function.sources.default';
 import { ChartWorker } from 'projects/liquify/src/lib/chart-worker';
@@ -29,7 +29,8 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
   @ViewChild('chart', {static: true}) canvasRef: ElementRef;
 
   built = false;
-  @Output() latency = 60;
+  @Output() latencyEmitter = new EventEmitter<number>();
+  latency = 60;
   actDate: number = Date.now();
   updateDateInterval;
 
@@ -434,7 +435,7 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
       });
     }
     this.latency = Math.round(this.latency / 1000);
-    this.latency = this.latency;
+    this.latencyEmitter.emit(this.latency);
   }
 
   // if new addresses array arrives, update this.addresses and update connections

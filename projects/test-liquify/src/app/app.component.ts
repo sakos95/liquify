@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import Stats from 'stats.js';
 
 @Component({
@@ -17,8 +17,10 @@ export class AppComponent implements OnInit {
   n = 3;
   rows = 1;
   cols = 3;
+  latency = [];
 
   @ViewChild('containerDiv') containerDiv;
+  constructor(private changeDetRef: ChangeDetectorRef){ }
 
   ngOnInit() {
     this.width = window.innerWidth / this.cols - 20;
@@ -55,5 +57,10 @@ export class AppComponent implements OnInit {
 
   addChart() {
     this.n++;
+  }
+
+  latencyHandler(latency, index) {
+    this.latency[index] = latency;
+    this.changeDetRef.detectChanges();
   }
 }

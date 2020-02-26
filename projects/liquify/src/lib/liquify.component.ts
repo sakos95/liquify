@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnChanges, OnDestroy, Input, ElementRef,
-  Output, ViewChild, ChangeDetectorRef, SimpleChanges, ViewEncapsulation, AfterViewInit
+  Output, ViewChild, ChangeDetectorRef, SimpleChanges, ViewEncapsulation, AfterViewInit, EventEmitter
 } from '@angular/core';
 import createWorker from 'offscreen-canvas/create-worker';
 import insideWorker from 'offscreen-canvas/inside-worker';
@@ -33,7 +33,7 @@ export class LiquifyComponent implements OnChanges, OnDestroy, AfterViewInit {
   @ViewChild('chart', {static: true}) canvasRef: ElementRef;
 
   built = false;
-  @Output() latency = 60;
+  @Output() latency = new EventEmitter<number>();
   actDate: number = Date.now();
   updateDateInterval;
   functionSourceUrl: string;
@@ -63,7 +63,7 @@ export class LiquifyComponent implements OnChanges, OnDestroy, AfterViewInit {
     const that = this;
     function workerListener(e: any) {
       if (e.data.type === 'updateLatency') {
-        that.latency = e.data.latency;
+        that.latency.emit(e.data.latency);
         that.changeDetRef.detectChanges();
       }
     }

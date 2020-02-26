@@ -39,6 +39,7 @@ Add lib-liquify to your html code:
 	    [dataSetIDs]="dataSetIDs"
 	    [colors]="colors"
 	    [specialMessages]="specialMessages"
+	    (latency)="latencyHandler($event)"
     ></lib-liquify>
 
 
