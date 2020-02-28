@@ -1,13 +1,11 @@
 {
-  "name": "liquify",
-  "version": "0.0.1",
-  "dependencies": {
-
-  },
+  "name": "@sakos95/liquify",
+  "version": "0.0.8",
+  "dependencies": {},
   "peerDependencies": {
     "@angular/common": "^9.0.0-rc.9",
     "@angular/core": "^9.0.0-rc.9",
-    "@angular/flex-layout": "8.0.0-beta.27",
+    "@angular/flex-layout": "9.0.0-beta.29",
     "chart.js": "^2.8.0",
     "offscreen-canvas": "^0.1.1"
   },

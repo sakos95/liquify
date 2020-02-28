@@ -11,7 +11,7 @@ Liquify is built as an Angular library, that has two main parts: the liquify com
 # Usage
 To install Liquify to your application, run:
 
-    npm install liquify
+    npm install @sakos95/liquify
 Add LiquifyModule to your app.module.ts:
 
     @NgModule({
