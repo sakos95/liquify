@@ -164,13 +164,13 @@ export class ChartWorker {
               newValue = convertMessageToData(value[newIndex]);
               if (this.chartType === 'bubble') {
                   // the new value can't be equal to the last one
-                  isNew =  isNew ||
+                  isNew =  isNew && newValue.measured > limitDate ||
                   actDataArr[actDataArr.length - 1].x !== newValue.x &&
                   actDataArr[actDataArr.length - 1].y !== newValue.y &&
                   actDataArr[actDataArr.length - 1].r !== newValue.r;
               } else {
                   // the new value can't be equal to the last one
-                  isNew =  isNew ||
+                  isNew =  isNew && newValue.measured > limitDate ||
                   actDataArr[actDataArr.length - 1].x !== newValue.x &&
                   actDataArr[actDataArr.length - 1].y !== newValue.y;
               }
