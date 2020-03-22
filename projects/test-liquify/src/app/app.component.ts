@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import Stats from 'stats.js';
+import { TestFunctionSources } from 'projects/test-liquify/test-function-sources';
 
 @Component({
   selector: 'app-root',
@@ -14,17 +15,21 @@ export class AppComponent implements OnInit {
   avgFps = [0];
   count = [0];
   avgTenSec = 0;
-  n = 3;
+  n = 1;
   rows = 1;
-  cols = 3;
+  cols = 1;
   latency = [];
+  testFunctionSources = new TestFunctionSources();
+  useWorker = true;
 
   @ViewChild('containerDiv') containerDiv;
-  constructor(private changeDetRef: ChangeDetectorRef){ }
+  @ViewChild('rows') rowsInput;
+  @ViewChild('cols') colsInput;
+  @ViewChild('number') nInput;
+  constructor(private changeDetRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.width = window.innerWidth / this.cols - 20;
-    this.height = window.innerHeight / this.rows - 20;
+    this.updateSize();
     let stats: Stats;
     stats = new Stats();
     stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -62,5 +67,21 @@ export class AppComponent implements OnInit {
   latencyHandler(latency, index) {
     this.latency[index] = latency;
     this.changeDetRef.detectChanges();
+  }
+
+  updateSize() {
+    this.width = window.innerWidth / this.cols - 20;
+    this.height = window.innerHeight / this.rows - 20;
+  }
+
+  applyLayout() {
+    this.n = this.nInput.nativeElement.value;
+    this.rows = this.rowsInput.nativeElement.value;
+    this.cols = this.colsInput.nativeElement.value;
+    this.updateSize();
+  }
+
+  switchWorker() {
+    this.useWorker = !this.useWorker;
   }
 }

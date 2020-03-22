@@ -216,6 +216,8 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
   setSize(width, height){
     this.canvasRef.nativeElement.width = width;
     this.canvasRef.nativeElement.height = height;
+    this.canvasRef.nativeElement.style.width = width + 'px';
+    this.canvasRef.nativeElement.style.height = height + 'px';
     if (this.myChart !== undefined) {// if chart is already built
         this.myChart.width = width;
         this.myChart.height = height;

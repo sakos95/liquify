@@ -1,7 +1,7 @@
 <div #containerDiv>
   <div *ngFor="let dummy of ' '.repeat(n).split(''), let x = index">
     
-    <lib-liquify
+    <lib-liquify *ngIf="useWorker"
     [addresses]="fakeURL"
     [xAxisType]="'time'"
     [yAxisType]="'linear'"
@@ -9,10 +9,12 @@
     [width]="width"
     [height]="height"
     [duration]=10000
+    [dataSetIDs]="fakeURL"
+    [functionSource]="testFunctionSources"
     (latency)="latencyHandler($event,x)"
     ></lib-liquify>
-    <!--
-    <app-chart
+    
+    <app-chart *ngIf="!useWorker"
     [x] = x
     [addresses]="fakeURL"
     [xAxisType]="'time'"
@@ -21,14 +23,21 @@
     [width]="width"
     [height]="height"
     [duration]=10000
+    [dataSetIDs]="fakeURL"
+    [functionSource]="testFunctionSources"
     (latencyEmitter)="latencyHandler($event,x)"
     ></app-chart>
-    -->
+    
     Latency: {{latency[x]}}
   </div>
 </div>
 
 <div class="buttonDiv">
+  <p>Use worker<input (click)="switchWorker()" type="checkbox" checked="true"></p>
+  <p>Rows:<input type="number" #rows name="rows" min=1 value=1 /></p>
+  <p>Columns:<input type="number" #cols name="cols" min=1 value=1 /></p>
+  <p>Number of charts:<input type="number" #number name="number" value=1 /></p>
+  <button (click)="applyLayout()">Apply new layout!</button>
   <p>{{avgFps[0]}}</p>
   <p><button (click)="measureTenSec()">Measure next 10 seconds</button></p>
   <p>{{avgTenSec}}</p>
