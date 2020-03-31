@@ -38,9 +38,9 @@
   <p>Columns:<input type="number" #cols name="cols" min=1 value=1 /></p>
   <p>Number of charts:<input type="number" #number name="number" value=1 /></p>
   <button (click)="applyLayout()">Apply new layout!</button>
-  <p>{{avgFps[0]}}</p>
+  <p>Average FPS: {{avgFps[0]}}</p>
   <p><button (click)="measureTenSec()">Measure next 10 seconds</button></p>
-  <p>{{avgTenSec}}</p>
+  <p>Average FPS of the measured 10 seconds: {{avgTenSec}}</p>
 
 </div>
 <div class="buttonDiv">
