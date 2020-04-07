@@ -152,7 +152,7 @@ export class ChartWorker {
                   this.messageData.set(key, []);
               } else {
                   // delete old values
-                  actDataArr.splice(0, limitDataIndex - 1);
+                  actDataArr.splice(0, limitDataIndex);
               }
               }
               let newValue;
@@ -398,6 +398,22 @@ export class ChartWorker {
             updateColors();
           } else if (e.data.type === 'updateDuration') {
             this.duration = e.data.duration;
+          } else if (e.data.type === 'updateChartType') {
+            this.chartType = e.data.chartType;
+            this.myChart.config.type = this.chartType;
+            this.myChart.update(0);
+          } else if (e.data.type === 'updateXAxisType') {
+            this.xAxisType = e.data.xAxisType;
+            this.myChart.config.options.scales.xAxes[0].type = this.xAxisType;
+            this.myChart.update(0);
+          } else if (e.data.type === 'updateYAxisType') {
+            this.yAxisType = e.data.yAxisType;
+            this.myChart.config.options.scales.yAxes[0].type = this.yAxisType;
+            this.myChart.update(0);
+          } else if (e.data.type === 'updateFunctionSource') {
+            if (e.data.functionSource) {
+              importScripts(e.data.functionSource);
+            }
           } else if (e.data.type === 'updateAddresses') {
             updateAddresses(e.data.addresses);
           } else if (e.data.type === 'renderChart') {

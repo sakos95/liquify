@@ -1,6 +1,6 @@
 {
   "name": "@sakos95/liquify",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "dependencies": {},
   "peerDependencies": {
     "@angular/common": "^9.0.0-rc.9",
@@ -9,9 +9,23 @@
     "chart.js": "^2.8.0",
     "offscreen-canvas": "^0.1.1"
   },
+  "description": "EFOP-3.6.3-VEKOP-16-2017-00002.",
   "devDependencies": {
     "codelyzer": "~4.5.0",
     "tslib": "^1.10.0",
     "typescript": "~3.6.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakos95/liquify.git"
+  },
+  "keywords": [
+    "animation"
+  ],
+  "author": "Ákos Somogyi, Barnabás Lóránt Balázs, Zoltán Zvara",
+  "license": "Creative Commons Attribution Share Alike 4.0 International",
+  "bugs": {
+    "url": "https://github.com/sakos95/liquify/issues"
+  },
+  "homepage": "https://github.com/sakos95/liquify#readme"
 }

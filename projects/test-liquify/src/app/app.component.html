@@ -3,13 +3,13 @@
     
     <lib-liquify *ngIf="useWorker"
     [addresses]="fakeURL"
-    [xAxisType]="'time'"
-    [yAxisType]="'linear'"
-    [chartType]="'line'"
+    [xAxisType]="xAxisType"
+    [yAxisType]="yAxisType"
+    [chartType]="chartType"
     [width]="width"
     [height]="height"
     [duration]=10000
-    [dataSetIDs]="fakeURL"
+    [dataSetIDs]="dataSetIDs"
     [functionSource]="testFunctionSources"
     (latency)="latencyHandler($event,x)"
     ></lib-liquify>
@@ -17,13 +17,13 @@
     <app-chart *ngIf="!useWorker"
     [x] = x
     [addresses]="fakeURL"
-    [xAxisType]="'time'"
-    [yAxisType]="'linear'"
-    [chartType]="'line'"
+    [xAxisType]="xAxisType"
+    [yAxisType]="yAxisType"
+    [chartType]="chartType"
     [width]="width"
     [height]="height"
     [duration]=10000
-    [dataSetIDs]="fakeURL"
+    [dataSetIDs]="dataSetIDs"
     [functionSource]="testFunctionSources"
     (latencyEmitter)="latencyHandler($event,x)"
     ></app-chart>
@@ -41,6 +41,10 @@
   <p>Average FPS: {{avgFps[0]}}</p>
   <p><button (click)="measureTenSec()">Measure next 10 seconds</button></p>
   <p>Average FPS of the measured 10 seconds: {{avgTenSec}}</p>
+  <p><button (click)="changeChartType()">Change chartType</button></p>
+  <p><button (click)="changeXAxisType()">Change xAxisType</button></p>
+  <p><button (click)="changeYAxisType()">Change yAxisType</button></p>
+  <p><button (click)="changeFunctionSource()">Change FunctionSource</button></p>
 
 </div>
 <div class="buttonDiv">

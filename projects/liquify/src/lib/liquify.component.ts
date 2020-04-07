@@ -139,6 +139,18 @@ export class LiquifyComponent implements OnChanges, OnDestroy, AfterViewInit {
     if (this.worker !== undefined && changes.duration) {
       this.updateDuration();
     }
+    if (this.worker !== undefined && changes.chartType) {
+      this.updateChartType();
+    }
+    if (this.worker !== undefined && changes.xAxisType) {
+      this.updateXAxisType();
+    }
+    if (this.worker !== undefined && changes.yAxisType) {
+      this.updateYAxisType();
+    }
+    if (this.worker !== undefined && changes.functionSource) {
+      this.updateFunctionSource();
+    }
   }
 
   ngOnDestroy() {
@@ -218,5 +230,30 @@ export class LiquifyComponent implements OnChanges, OnDestroy, AfterViewInit {
   // sends the given messages to the given addresses
   sendSpecialMessages() {
     this.worker.post({type: 'sendSpecialMessages', messages: this.specialMessages});
+  }
+
+  // updates chartType on worker
+  updateChartType() {
+    this.worker.post({type: 'updateChartType', chartType: this.chartType});
+  }
+
+  // updates xAxisType on worker
+  updateXAxisType() {
+    this.worker.post({type: 'updateXAxisType', xAxisType: this.xAxisType});
+  }
+
+  // updates yAxisType on worker
+  updateYAxisType() {
+    this.worker.post({type: 'updateYAxisType', yAxisType: this.yAxisType});
+  }
+
+  // updates functionSource on worker
+  updateFunctionSource() {
+    if (this.functionSource !== undefined) {
+      const blobPartArrFromObj = this.createBlobPartArrFromObj(this.functionSource);
+      this.functionsBlob = new Blob( blobPartArrFromObj, {type: 'application/javascript'});
+      this.functionSourceUrl = URL.createObjectURL(this.functionsBlob);
+    }
+    this.worker.post({type: 'updateFunctionSource', functionSource: this.functionSourceUrl});
   }
 }

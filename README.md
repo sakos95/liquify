@@ -2,12 +2,14 @@
 
 # Liquify
 
-![Bar chart](./Bar-chart.png)
-![Bubble chart](./Bubble-chart.png)
-![Line chart](./Line-chart.png)
+![Live charts](./live-charts.gif)
 
 The aim of Liquify is to provide a fast, customizable and easy to use charting library.
 Liquify is built as an Angular library, that has two main parts: the liquify component, that provides the API of the library, and the webworker, that draws the chart. 
+
+# System requirements
+The library supports the Angular applications, and it requires the installation of the ai/offscreen-canvas library. In order to display the charts, the webpage needs to be opened in a web browser, that supports the webworker and offscreen-canvas technologies and getting the 2D rendering context of the offscreen-canvas.
+
 # Usage
 To install Liquify to your application, run:
 
@@ -23,7 +25,7 @@ Add LiquifyModule to your app.module.ts:
     ...
     })
 
-Add lib-liquify to your html code:
+Add lib-liquify to your html code, and specify the input and output arguments:
 
     <lib-liquify
 	    [addresses]="addresses"
@@ -42,6 +44,32 @@ Add lib-liquify to your html code:
 	    (latency)="latencyHandler($event)"
     ></lib-liquify>
 
+The input arguments of Liquify are the following:
+
+* The **addresses** argument contains the websocket addresses that the component should connect to. The addresses argument must be a string array. This is a required argument, has no default value.
+* The **width** and **height** contain the size of the chart in pixels. The default values are 600 and 300 respectively.
+* The **chartType** is a string argument containing the type of the chart. There are three options to choose from: line, bar and bubble. By default "line" is used. An example for each can be seen on the images below.
+
+![Bar chart](./Bar-chart.png)
+![Bubble chart](./Bubble-chart.png)
+![Line chart](./Line-chart.png)
+
+* The **xAxisType** and the **yAxisType** arguments select the type of data shown on the x-axis and y-axis:
+
+  * linear - The linear scale is used to chart numerical data. Linear interpolation is used to determine where a value lies on the axis.
+  * logarithmic - The logarithmic scale is used to chart numerical data. Logarithmic interpolation is used to determine where a value lies on the axis.
+  * time - The time scale is used to display times and dates.
+
+  By default "time" is used for the x axe and "linear" for y.
+* The **timeBackward** is a boolean argument, which can be used if the type of the x-axis is "time". If true the chart will show the actual time (when the data was measured), otherwise the time difference between the measurement and now. Defaults to false.
+* The **suspended** parameter can be used to turn off rendering, if it is not necessary. It's a boolean argument, defaults to false.
+* The **dataSetIDs** is an array of strings, which can be used to identify the different datasets. Since Liquify can connect to multiple websockets, and even a single websocket can send various kinds of data, dataSetIDs determine which elements belong together. The elements, that belong to the same dataset, will have the same color, and they will also form a line on the linechart. The default value is an array with a '0' string, so all elements belong together. For example, we might have sensors, that produce temperature and humidity data. The server could send those data on two websocket connections: one for the temperature and one for the humidity. In this case it would be a good idea to choose the addresses of the connections as dataSetIDs, and override the findDataSetID function to return the address, that the data element came from. But it is also possible, that both kinds of data is sent through a single websocket connection. In this case it would be a good idea to choose 'temperature' and 'humidity' as dataSetIDs, and override the findDataSetIDs to separate the received data into two datasets.
+* The **colors** argument is a Map, that assigns an array of numbers to each dataSetID. The arrays contain the RGB color codes: 3 numbers between 0 and 255. If this input is not specified or there is no assigned color to a dataSetID, a random color will be used.
+* The **duration** argument declares the time interval in which data will be visualized. It's a number argument, the user can specify in milliseconds how long should the measurements remain on the chart.
+* The **specialMessages** must be a Map, which can assign a string to every address. If there is a string assigned to an address, then the message will be sent to that address automatically. This can be useful, if the server can accept special commands to filter, or reduce the data, that it sends.
+* The **functionSource** argument must implement the **FunctionOverrideInterface** defined in Liquify. The user can override the **convertMessageToData**, **checkData** and **findDataSetID** functions.
+
+The **latency** output argument can be handled by function, that takes the emitted event as an argument. The latency argument returns the time difference between the measurement time of the latest data and the current time of the computer. It can be useful to keep track of how much time it takes to an element of data to get from the server to the client. It can also be useful for debugging purposes. For example, it can reveal, if the server is slow, or sends outdated data.
 
 # Development
   
@@ -49,18 +77,11 @@ Add lib-liquify to your html code:
 
 The automated tests run in Google Chrome, so it should be installed on your computer.
 
-## Installing dependencies
-    npm install
+Before starting the development of Liquify, the source code has to be cloned with a version control system, and its packages have to be installed by issuing the **"npm install"** command from the library of the workspace. There are 3 projects in the workspace:
 
-## Build UMD bundle with webpack
-
-    npx webpack
-
-## Creating a tgz file to be used locally
-
-    ng build --prod
-    cd dist/liquify
-    npm pack
+* The **liquify** project contains the library itself. It is located in the **projects/liquify** folder. This includes the **LiquifyComponent** Angular component, that provides the API of the library, the **ChartWorker** class, that provides the code of the worker, the **FunctionOverrideInterface** interface, that can be overriden by the user, and its default implementation, the **DefaultFunctionSources** class.
+* The **test\_server** project can be found in the **projects/liquify/src/test\_server** folder. This provides a locally runnable server, that can provide data to testing.
+* The **test-liquify** project provides a simple Angular application, that can be found in the **projects/test-liquify** folder. It can be used to run tests, that include multiple charts on the same webpage.
 
 ## Running tests
 
@@ -83,10 +104,10 @@ You can run automated tests with the following command
 
 ## Publishing to npm
 
-    ng build --prod
+    ng build liquify --prod
     cd dist/liquify
-    npm pack
     npm init
+    npm pack
     npm login
     npm publish --access=public
 

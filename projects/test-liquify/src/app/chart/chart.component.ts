@@ -86,14 +86,23 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
         this.setSize(this.width, this.height);
       }
     }
-    if (this.worker !== undefined && changes.specialMessages) {
+    if (changes.specialMessages) {
       this.sendSpecialMessages(this.specialMessages);
     }
-    if (this.worker !== undefined && changes.dataSetIDs) {
+    if (changes.dataSetIDs) {
       this.updateDataSetIDs();
     }
-    if (this.worker !== undefined && changes.colors) {
+    if (changes.colors) {
       this.updateColors();
+    }
+    if (changes.chartType) {
+      this.updateChartType();
+    }
+    if (changes.xAxisType) {
+      this.updateXAxisType();
+    }
+    if (changes.yAxisType) {
+      this.updateYAxisType();
     }
   }
 
@@ -244,7 +253,7 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
                 this.messageData.set(key, []);
             } else {
                 // delete old values
-                actDataArr.splice(0, limitDataIndex - 1);
+                actDataArr.splice(0, limitDataIndex);
             }
             }
             let newValue;
@@ -445,5 +454,23 @@ export class ChartComponent implements  OnChanges, OnInit, OnDestroy, AfterViewI
     this.addresses = adds;
     this.connectToAddresses();
     this.updateDataSetIDs();
+  }
+
+  // updates chartType on worker
+  updateChartType() {
+    this.myChart.config.type = this.chartType;
+    this.myChart.update(0);
+  }
+
+  // updates xAxisType on worker
+  updateXAxisType() {
+    this.myChart.config.options.scales.xAxes[0].type = this.xAxisType;
+    this.myChart.update(0);
+  }
+
+  // updates yAxisType on worker
+  updateYAxisType() {
+    this.myChart.config.options.scales.yAxes[0].type = this.yAxisType;
+    this.myChart.update(0);
   }
 }

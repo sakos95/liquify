@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import Stats from 'stats.js';
 import { TestFunctionSources } from 'projects/test-liquify/test-function-sources';
+import { DefaultFunctionSources } from 'projects/liquify/src/lib/defaults/function.sources.default';
+import { FunctionOverrideInterface } from 'projects/liquify/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +21,12 @@ export class AppComponent implements OnInit {
   rows = 1;
   cols = 1;
   latency = [];
-  testFunctionSources = new TestFunctionSources();
+  testFunctionSources: FunctionOverrideInterface = new TestFunctionSources();
   useWorker = true;
+  dataSetIDs = this.fakeURL;
+  chartType = 'line';
+  xAxisType = 'time';
+  yAxisType = 'linear';
 
   @ViewChild('containerDiv') containerDiv;
   @ViewChild('rows') rowsInput;
@@ -83,5 +89,43 @@ export class AppComponent implements OnInit {
 
   switchWorker() {
     this.useWorker = !this.useWorker;
+  }
+
+  changeChartType() {
+    if (this.chartType === 'line') {
+      this.chartType = 'bar';
+    } else if (this.chartType === 'bar') {
+      this.chartType = 'bubble';
+    } else {
+      this.chartType = 'line';
+    }
+  }
+
+  changeXAxisType() {
+    if (this.xAxisType === 'time') {
+      this.xAxisType = 'linear';
+    } else if (this.xAxisType === 'linear') {
+      this.xAxisType = 'logarithmic';
+    } else {
+      this.xAxisType = 'time';
+    }
+  }
+
+  changeYAxisType() {
+    if (this.yAxisType === 'linear') {
+      this.yAxisType = 'logarithmic';
+    } else {
+      this.yAxisType = 'linear';
+    }
+  }
+
+  changeFunctionSource(){
+    if (this.testFunctionSources instanceof TestFunctionSources) {
+      this.testFunctionSources = new DefaultFunctionSources();
+      this.dataSetIDs = ['0'];
+    } else {
+      this.testFunctionSources = new TestFunctionSources();
+      this.dataSetIDs = this.fakeURL;
+    }
   }
 }
