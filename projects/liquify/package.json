@@ -1,6 +1,6 @@
 {
   "name": "@sakos95/liquify",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "dependencies": {},
   "peerDependencies": {
     "@angular/common": "^9.0.0-rc.9",
@@ -14,6 +14,12 @@
     "codelyzer": "~4.5.0",
     "tslib": "^1.10.0",
     "typescript": "~3.6.4"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

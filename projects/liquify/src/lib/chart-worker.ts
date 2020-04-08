@@ -66,6 +66,7 @@ export class ChartWorker {
             borderWidth: 1,
             lineTension: 0,
             pointRadius: 0, // if 0, the point is not rendered
+            // pointStyle: 'triangle',
           };
           this.dataMap.set(key, dataset);
           // creating datasets for chart
@@ -135,7 +136,7 @@ export class ChartWorker {
 
     updateChart() {
       // sets the limit of the oldest value
-      const limitDate = Date.now() - (this.latency * 1000 + this.duration);
+      const limitDate = Date.now() - (this.latency + this.duration);
       if (this.messageData !== undefined) {
           // checks every dataSetID for a new value
           this.messageData.forEach((value, key) => {
@@ -339,7 +340,6 @@ export class ChartWorker {
           }
           });
       }
-      this.latency = Math.round(this.latency / 1000);
       // if chart is empty send 0 latency
       worker.post({ type: 'updateLatency', latency: this.latency === Infinity ? 0 : this.latency });
     }
