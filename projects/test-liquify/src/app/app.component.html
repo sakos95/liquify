@@ -1,34 +1,43 @@
 <div #containerDiv>
-  <div *ngFor="let dummy of ' '.repeat(n).split(''), let x = index">
+  <div *ngIf="useWorker">
+    <div *ngFor="let dummy of ' '.repeat(n).split(''), let x = index">
+      
+        <lib-liquify
+        [addresses]="fakeURL"
+        [xAxisType]="xAxisType"
+        [yAxisType]="yAxisType"
+        [chartType]="chartType"
+        [width]="width"
+        [height]="height"
+        [duration]=10000
+        [dataSetIDs]="dataSetIDs"
+        [functionSource]="testFunctionSources"
+        (latency)="latencyHandler($event,x)"
+        ></lib-liquify>
+        
+        Latency: {{latency[x]}}
+      </div>
+  </div>
+  <div *ngIf="!useWorker">
+
+      <div *ngFor="let dummy of ' '.repeat(n).split(''), let x = index">
     
-    <lib-liquify *ngIf="useWorker"
-    [addresses]="fakeURL"
-    [xAxisType]="xAxisType"
-    [yAxisType]="yAxisType"
-    [chartType]="chartType"
-    [width]="width"
-    [height]="height"
-    [duration]=10000
-    [dataSetIDs]="dataSetIDs"
-    [functionSource]="testFunctionSources"
-    (latency)="latencyHandler($event,x)"
-    ></lib-liquify>
-    
-    <app-chart *ngIf="!useWorker"
-    [x] = x
-    [addresses]="fakeURL"
-    [xAxisType]="xAxisType"
-    [yAxisType]="yAxisType"
-    [chartType]="chartType"
-    [width]="width"
-    [height]="height"
-    [duration]=10000
-    [dataSetIDs]="dataSetIDs"
-    [functionSource]="testFunctionSources"
-    (latencyEmitter)="latencyHandler($event,x)"
-    ></app-chart>
-    
-    Latency: {{latency[x]}}
+          <app-chart
+          [x] = x
+          [addresses]="fakeURL"
+          [xAxisType]="xAxisType"
+          [yAxisType]="yAxisType"
+          [chartType]="chartType"
+          [width]="width"
+          [height]="height"
+          [duration]=10000
+          [dataSetIDs]="dataSetIDs"
+          [functionSource]="testFunctionSources"
+          (latencyEmitter)="latencyHandler($event,x)"
+          ></app-chart>
+      
+          Latency: {{latency[x]}}
+        </div>
   </div>
 </div>
 

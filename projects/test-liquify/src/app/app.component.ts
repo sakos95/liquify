@@ -21,9 +21,9 @@ export class AppComponent implements OnInit {
   rows = 1;
   cols = 1;
   latency = [];
-  testFunctionSources: FunctionOverrideInterface = new TestFunctionSources();
+  testFunctionSources: FunctionOverrideInterface = new DefaultFunctionSources();
   useWorker = true;
-  dataSetIDs = this.fakeURL;
+  dataSetIDs = ['0'];
   chartType = 'line';
   xAxisType = 'time';
   yAxisType = 'linear';
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   latencyHandler(latency, index) {
-    this.latency[index] = latency;
+    this.latency[index] = Math.round(latency / 1000);
     this.changeDetRef.detectChanges();
   }
 
@@ -120,12 +120,12 @@ export class AppComponent implements OnInit {
   }
 
   changeFunctionSource(){
-    if (this.testFunctionSources instanceof TestFunctionSources) {
-      this.testFunctionSources = new DefaultFunctionSources();
-      this.dataSetIDs = ['0'];
-    } else {
+    if (this.testFunctionSources instanceof DefaultFunctionSources) {
       this.testFunctionSources = new TestFunctionSources();
       this.dataSetIDs = this.fakeURL;
+    } else {
+      this.testFunctionSources = new DefaultFunctionSources();
+      this.dataSetIDs = ['0'];
     }
   }
 }
