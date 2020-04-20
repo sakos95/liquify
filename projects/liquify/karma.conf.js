@@ -30,6 +30,10 @@ module.exports = function (config) {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
+      },
+      ChromiumHeadlessCI: {
+        base: 'ChromiumHeadless',
+        flags: ['--no-sandbox']
       }
     },
     singleRun: false,
