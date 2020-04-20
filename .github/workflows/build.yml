@@ -29,7 +29,7 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Run a multi-line script
       run: |
-        apt-get install chromium-browser
+        sudo apt-get install chromium-browser
         npm install
         npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI
         
