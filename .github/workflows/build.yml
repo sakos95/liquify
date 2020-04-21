@@ -35,6 +35,9 @@ jobs:
         sudo apt-get install chromium-browser
         npm install
         npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI
+        cd projects/liquify
+        npm version patch
+        cd ../..
         npm run ng build liquify --prod
         echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
         cd dist/liquify
