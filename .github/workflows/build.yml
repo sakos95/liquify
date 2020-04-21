@@ -36,6 +36,7 @@ jobs:
         npm install
         npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI
         npm run ng build liquify --prod
+        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
         cd dist/liquify
         npm pack
         npm publish --access=public
