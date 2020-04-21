@@ -32,10 +32,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install chromium-browser
         npm install
-        npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI &&
-        ng build liquify --prod &&
-        cd dist/liquify &&
-        npm pack &&
+        npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI
+        ng build liquify --prod
+        cd dist/liquify
+        npm pack
         npm publish --access=public
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
