@@ -36,6 +36,7 @@ jobs:
         npm install
         npm run test -- liquify  --no-watch --no-progress --browsers ChromiumHeadlessCI
         cd projects/liquify
+        npm version $(npm view @sakos95/liquify version)
         npm version patch
         cd ../..
         npm run ng build liquify --prod
