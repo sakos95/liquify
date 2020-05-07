@@ -1,5 +1,3 @@
-
-
 # Liquify
 
 ![Live charts](./live-charts.gif)
@@ -73,6 +71,32 @@ The input arguments of Liquify are the following:
 * The **functionSource** argument must implement the **FunctionOverrideInterface** defined in Liquify. The user can override the **convertMessageToData**, **checkData** and **findDataSetID** functions.
 
 The **latency** output argument can be handled by function, that takes the emitted event as an argument. The latency argument returns the time difference between the measurement time of the latest data and the current time of the computer. It can be useful to keep track of how much time it takes to an element of data to get from the server to the client. It can also be useful for debugging purposes. For example, it can reveal, if the server is slow, or sends outdated data.
+# Performance
+The following results were measured on a HP Probook 470 G1, that had the following specs:
+* CPU: Intel Core i7-4702MQ
+* RAM: 8 GB
+* GPU: Intel HD 4600
+
+|  |  |  |  |
+|--|--|--|--|
+|Number of Charts | Data frequency | Average FPS | Average FPS|
+|||without worker | with worker |
+|1 | 100 ms |59.9|60.1 |
+|2 | 100 ms |41.7|59.9 |
+|3 | 100 ms |33.3|59.8 |
+|5 | 100 ms |24.1|59.7 |
+|10 | 100 ms |14.2|59.1 |
+|20 | 100 ms |9.3|50.4 |
+|30 | 100 ms |4.7|50.1 |
+|50 | 100 ms |2.2|43.0 |
+|100 | 100 ms |0.8|17.7 |
+|1 | 10 ms |14.1|60.0|
+|5 | 10 ms |5.1|59.4|
+|10 | 10 ms |3.9|55.6 |
+|20 | 10 ms |0.6|45.0|
+|30 | 10 ms |0.4|38.2|
+|50 | 10 ms |0.09|35.8|
+|100 | 10 ms |0.01|15.8|
 
 # Development
   
@@ -104,6 +128,9 @@ You can run automated tests with the following command
 	 cd ./projects/test-liquify
 	 npm install
 	 ng serve --open
+## The method of testing
+
+I measured the performance of Liquify with the help of the [stats.js library](https://github.com/mrdoob/stats.js/). The test project created the given number of charts on the same page. At first it used Chart.js without webworkers, and then it used Liquify with webworkers. Then the charts connected to the test server, which started sending new data points to the charts. The test server ran with two different settings. At first it was set to produce a new data point every 100 millisecond. Then it was set to produce a new data point every 10 milliseconds. After the page was loaded, all the charts connected, and the charts received more than 10 seconds of data, I measured the average frame per second (FPS) of a 10-second time interval.
 
 ## Publishing to npm
 
@@ -113,7 +140,7 @@ You can run automated tests with the following command
     npm pack
     npm login
     npm publish --access=public
-    
+   
 # Contributing
 
 We are looking for contributors! Please consider submitting a PR or your ideas for improvement!
