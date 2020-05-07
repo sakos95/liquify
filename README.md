@@ -113,6 +113,8 @@ You can run automated tests with the following command
 
 # Support
 
-This project received funding from the Hungarian Government through EFOP-3.6.3-VEKOP-16-2017-00002: "Integrált kutatói utánpótlás-képzési program az informatika és számítástudomány diszciplináris területein".
+If you are interested in support contact hello@enliven.systems
 
+# Received support from
 
+This project received funding from the Hungarian Government through EFOP-3.6.3-VEKOP-16-2017-00002: "Integrált kutatói utánpótlás-képzési program az informatika és számítástudomány diszciplináris területein" as well as support from Enliven Systems (https://enliven.systems).
