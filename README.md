@@ -4,8 +4,11 @@
 
 ![Live charts](./live-charts.gif)
 
-The aim of Liquify is to provide a fast, customizable and easy to use charting library.
-Liquify is built as an Angular library, that has two main parts: the liquify component, that provides the API of the library, and the webworker, that draws the chart. 
+Liquify: fast, multi-threaded visualization of stream data with ChartJS & Angular.
+
+The aim of Liquify is to provide a fast, customizable and easy way to use the ChartJS library to show and update many charts that consume stream data from web socket. Liquify may display and update 50 to 100 charts with enjoyable frame rates. See performance measurements below.
+
+Liquify is built as an Angular library, that has two main parts: the liquify component, that provides the API of the library, and the webworker, that draws the chart.
 
 # System requirements
 The library supports the Angular applications, and it requires the installation of the ai/offscreen-canvas library. In order to display the charts, the webpage needs to be opened in a web browser, that supports the webworker and offscreen-canvas technologies and getting the 2D rendering context of the offscreen-canvas.
@@ -110,6 +113,10 @@ You can run automated tests with the following command
     npm pack
     npm login
     npm publish --access=public
+    
+# Contributing
+
+We are looking for contributors! Please consider submitting a PR or your ideas for improvement!
 
 # Support
 
