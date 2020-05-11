@@ -3,7 +3,7 @@
 ![Live charts](./live-charts.gif)
 
 ![CI](https://github.com/sakos95/liquify/workflows/CI/badge.svg)
-[![npm version](https://github.com/sakos95/liquify/workflows/CI/badge.svg)](//npmjs.com/package/@sakos95/liquify)
+[![npm version](https://badge.fury.io/js/%40sakos95%2Fliquify.svg)](https://badge.fury.io/js/%40sakos95%2Fliquify)
 
 
 Liquify: fast, multi-threaded visualization of stream data with ChartJS & Angular.
