@@ -1,3 +1,4 @@
+
 # Liquify
 
 ![Live charts](./live-charts.gif)
@@ -76,6 +77,13 @@ The input arguments of Liquify are the following:
 
 The **latency** output argument can be handled by function, that takes the emitted event as an argument. The latency argument returns the time difference between the measurement time of the latest data and the current time of the computer. It can be useful to keep track of how much time it takes to an element of data to get from the server to the client. It can also be useful for debugging purposes. For example, it can reveal, if the server is slow, or sends outdated data.
 # Performance
+
+## The method of testing
+
+I measured the performance of Liquify with the help of the [stats.js library](https://github.com/mrdoob/stats.js/). The test project created the given number of charts on the same page. At first it used Chart.js without webworkers, and then it used Liquify with webworkers. Then the charts connected to the test server, which started sending new data points to the charts. The test server ran with two different settings. At first it was set to produce a new data point every 100 millisecond. Then it was set to produce a new data point every 10 milliseconds. After the page was loaded, all the charts connected, and the charts received more than 10 seconds of data, I measured the average frame per second (FPS) of a 10-second time interval.
+
+## Results
+
 The following results were measured on a HP Probook 470 G1, that had the following specs:
 * CPU: Intel Core i7-4702MQ
 * RAM: 8 GB
@@ -132,9 +140,6 @@ You can run automated tests with the following command
 	 cd ./projects/test-liquify
 	 npm install
 	 ng serve --open
-## The method of testing
-
-I measured the performance of Liquify with the help of the [stats.js library](https://github.com/mrdoob/stats.js/). The test project created the given number of charts on the same page. At first it used Chart.js without webworkers, and then it used Liquify with webworkers. Then the charts connected to the test server, which started sending new data points to the charts. The test server ran with two different settings. At first it was set to produce a new data point every 100 millisecond. Then it was set to produce a new data point every 10 milliseconds. After the page was loaded, all the charts connected, and the charts received more than 10 seconds of data, I measured the average frame per second (FPS) of a 10-second time interval.
 
 ## Publishing to npm
 
@@ -144,6 +149,61 @@ I measured the performance of Liquify with the help of the [stats.js library](ht
     npm pack
     npm login
     npm publish --access=public
+  
+  
+# Architecture
+
+## General architecture
+
+Liquify is built as an Angular library, that has two main parts:
+ * The liquify component, that provides the custom HTML tag, which is basically the API of the library.
+   *  The offscreen-canvas library is used to create the webworker.
+ * The webworker, responsible for drawing the chart.
+	* The Chart.js library is used to visualize the charts.
+	* The webworker connects to the data server through websockets, receives the messages and processes them and draws the chart.
+
+## Communication
+
+When the liquify component is created it creates a webworker with the given arguments using the  [offscreen-canvas library](https://github.com/ai/offscreen-canvas), while also sending the buildChart message, so that the worker builds the chart on the provided canvas. When the input arguments change the component sends a message to the worker containing the updated arguments. When the component is destroyed, it sends a close message to the worker.
+
+The chart-worker part connects to the given websocket addresses, processes the received data, draws and updates the chart, handles the messages of the liquify component, and regularly sends back the latency to the liquify component.
+<p style="text-align: center;">
+
+![The typical messages among a container component, the Liquify component and the worker](./sequence_diagram.png)
+
+The typical messages among a container component, the Liquify component and the worker
+
+</p>
+The worker handles the following messages:
+
+* *buildChart*: The worker stores the received input arguments, imports the overridden functions. Thereafter it connects to the given addresses using the  *connectToAddresses* method, and builds the chart with the *buildChart* method. Finally it sets a repeating timer to render the chart every 30 millisecond using *renderChart* method.
+* *setSize*: calls the *setSize* method to set the chart size to the given width and height.
+* *updateDate*: updates the *actDate* attribute with the given value.
+* *updateDataSetIDs*: updates the *dataSetIDs* attribute with the given value, and calls *updateDataSetIDs* method to create new datasets on the chart to the new datasets.
+* *updateColors*: calls the *updateColors* function, which updates the colors on the chart.
+* *updateDuration*: stores the new duration value.
+* *updateAddresses*: invokes the *updateAddresses* function to update connections.
+* *updateChartType*: stores the new chartType value, and changes the chartType of the chart.
+* *updateXAxisType*: stores the new xAxisType value, and changes the xAxisType of the chart.
+* *updateYAxisType*: stores the new yAxisType value, and changes the yAxisType of the chart.
+* *updateFunctionSource*: imports the new overridden functions.
+* *renderChart*: renders the chart, if it is not suspended.
+* *sendSpecialMessages*: calls the *sendSpecialMessages* function, which sends the new messages to the given addresses.
+* *timeBackward*: stores the new timeBackward value.
+* *suspended*: stores the new suspended value.
+* *close*: The worker clears the rendering interval, closes the connections using the *closeConnections method*, destroys the chart and stops the worker.
+
+
+The worker uses the functions of the FunctionOverrideInterface, which can be overridden.
+
+The FunctionOverrideInterface contains the following functions:
+* *checkData(latestStatus)*: If a message is received from a connection, the checkData function is called to check whether the received data is valid. It must return a boolean value.
+* *findDataSetID(latestStatus, address)*: If the message is valid, the findDataSetID method is invoked. It uses the received message and the address, where the message came from, to determine the dataSetID, which the message belongs to.
+* *convertMessageToData(data)*: Before the received data can be drawn on the chart, the message is converted to the proper format using the *convertMessageToData* function. The function returns an object with the following attributes:
+	* measured: the measurement time of the data
+	* x: the x-axis value of the data
+	* y: the y-axis value of the data
+	* r: radius of the value -- if the chart is a bubble chart
    
 # Contributing
 
