@@ -19,7 +19,7 @@
   "author": "Ákos Somogyi, Barnabás Lóránt Balázs, Zoltán Zvara",
   "license": "Creative Commons Attribution Share Alike 4.0 International",
   "dependencies": {
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "ws": "^4.0.0"
   },
   "devDependencies": {
